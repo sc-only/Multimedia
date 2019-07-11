@@ -11,9 +11,13 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   thymeleaf:
     prefix: classpath:/templates/
-
-server:
-  port: 8080
-com:
-  ccr: ${server.port}
-minMoney: 1
+  mail:
+    host: smtp.qq.com
+    username: 1781587589@qq.com
+    password: xjtbjrgxwvhieced
+    default-encoding: UTF-8
+  server:
+    port: 8080
+  com:
+    ccr: ${server.port}
+  minMoney: 1
