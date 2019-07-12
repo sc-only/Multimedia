@@ -40,8 +40,6 @@ public class MyShiroRealm extends AuthorizingRealm {
         //拿到账号（username）
         String username = (String) token.getPrincipal();
         System.out.println("username=:"+username);
-        //检查token的信息
-        System.out.println(token.getCredentials());
 
         User user = userRepository.findByUsername(username);
         if (user==null){

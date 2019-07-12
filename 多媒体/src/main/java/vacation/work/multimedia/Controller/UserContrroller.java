@@ -1,6 +1,9 @@
 package vacation.work.multimedia.Controller;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.apache.shiro.subject.Subject;
@@ -59,7 +62,7 @@ public class UserContrroller {
     }
 
     @PostMapping("/login")
-    public void userLogin(@RequestParam("username") String username,
+    public String userLogin(@RequestParam("username") String username,
                           @RequestParam("password") String password){
 
         System.out.println("取得参数: " + username + " " + password );
@@ -72,7 +75,22 @@ public class UserContrroller {
         Subject subject = SecurityUtils.getSubject();
 
         UsernamePasswordToken token = new UsernamePasswordToken(username,password);
-        subject.login(token);
-        System.out.println("isAuthenticated: "+subject.isAuthenticated());
+        try {
+            //主体提交登录请求到SecurityManager
+            subject.login(token);
+        }catch (IncorrectCredentialsException ice){
+            System.out.println("密码不正确");
+            return "no1";
+        }catch(UnknownAccountException uae){
+            System.out.println("账号不存在");
+            return "no2";
+        }
+        if(subject.isAuthenticated()){
+            System.out.println("认证成功");
+            return "yes";
+        }else{
+            token.clear();
+            return "no";
+        }
     }
 }
