@@ -7,7 +7,7 @@ import vacation.work.multimedia.Domain.User;
 import java.util.List;
 
 public interface UserRepository extends JpaRepository<User,String>, JpaSpecificationExecutor {
-    public List<User> findByUsername(String username);
     public List<User> findByUsernameAndAndPassword(String username,String password);
-    public List<User> findByCode(String code);
+    public User findByCode(String code);
+    public User findByUsername(String username);
 }
