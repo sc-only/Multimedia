@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import vacation.work.multimedia.Domain.User;
-import vacation.work.multimedia.Realm.CustomRealm;
+import vacation.work.multimedia.Realm.MyShiroRealm;
 import vacation.work.multimedia.Repositoty.UserRepository;
 import vacation.work.multimedia.Service.MailService;
 import vacation.work.multimedia.Utils.UUIDUtils;
@@ -63,10 +63,10 @@ public class UserContrroller {
                           @RequestParam("password") String password){
 
         System.out.println("取得参数: " + username + " " + password );
-        CustomRealm customRealm = new CustomRealm();
+        MyShiroRealm myShiroRealm = new MyShiroRealm();
 
         DefaultSecurityManager defaultSecurityManager = new DefaultSecurityManager();
-        defaultSecurityManager.setRealm(customRealm);
+        defaultSecurityManager.setRealm(myShiroRealm);
 
         SecurityUtils.setSecurityManager(defaultSecurityManager);
         Subject subject = SecurityUtils.getSubject();
