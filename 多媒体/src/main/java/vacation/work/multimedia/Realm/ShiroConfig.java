@@ -73,12 +73,13 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/JQuery/**","anon");
         filterChainDefinitionMap.put("/js/**","anon");
         //配置退出过滤器
+        filterChainDefinitionMap.put("/register", "anon");
         filterChainDefinitionMap.put("/example1","anon");
         filterChainDefinitionMap.put("/lxt","anon");
         filterChainDefinitionMap.put("/login","anon");
         filterChainDefinitionMap.put("/success","anon");
         filterChainDefinitionMap.put("/index","anon");
-        filterChainDefinitionMap.put("/Register","anon");
+        filterChainDefinitionMap.put("/regist_web","anon");
         filterChainDefinitionMap.put("/logout","logout");
         //过滤连接自定义，从上往下顺序执行，所以用LinkHashMap /**放在最下边
         filterChainDefinitionMap.put("/**","authc");

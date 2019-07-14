@@ -5,6 +5,8 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -42,6 +44,7 @@ public class UserContrroller {
             return "no";
         }else{
             User user = new User();
+            Md5Hash md5Hash = new Md5Hash(password);
             user.setUsername(username);
             user.setPassword(password);
             user.setEmail(email);
@@ -66,31 +69,35 @@ public class UserContrroller {
                           @RequestParam("password") String password){
 
         System.out.println("取得参数: " + username + " " + password );
-        MyShiroRealm myShiroRealm = new MyShiroRealm();
+        if(userRepository.findByUsername(username).getState()==1){
+            MyShiroRealm myShiroRealm = new MyShiroRealm();
 
-        DefaultSecurityManager defaultSecurityManager = new DefaultSecurityManager();
-        defaultSecurityManager.setRealm(myShiroRealm);
+            DefaultSecurityManager defaultSecurityManager = new DefaultSecurityManager();
+            defaultSecurityManager.setRealm(myShiroRealm);
 
-        SecurityUtils.setSecurityManager(defaultSecurityManager);
-        Subject subject = SecurityUtils.getSubject();
+            SecurityUtils.setSecurityManager(defaultSecurityManager);
+            Subject subject = SecurityUtils.getSubject();
 
-        UsernamePasswordToken token = new UsernamePasswordToken(username,password);
-        try {
-            //主体提交登录请求到SecurityManager
-            subject.login(token);
-        }catch (IncorrectCredentialsException ice){
-            System.out.println("密码不正确");
-            return "no1";
-        }catch(UnknownAccountException uae){
-            System.out.println("账号不存在");
-            return "no2";
-        }
-        if(subject.isAuthenticated()){
-            System.out.println("认证成功");
-            return "yes";
+            UsernamePasswordToken token = new UsernamePasswordToken(username,password);
+            try {
+                //主体提交登录请求到SecurityManager
+                subject.login(token);
+            }catch (IncorrectCredentialsException ice){
+                System.out.println("密码不正确");
+                return "no1";
+            }catch(UnknownAccountException uae){
+                System.out.println("账号不存在");
+                return "no2";
+            }
+            if(subject.isAuthenticated()){
+                System.out.println("认证成功");
+                return "yes";
+            }else{
+                token.clear();
+                return "no";
+            }
         }else{
-            token.clear();
-            return "no";
+            return "n3";
         }
     }
 }
